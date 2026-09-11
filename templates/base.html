@@ -1,0 +1,268 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+
+```
+<meta charset="utf-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1">
+
+<title>{% block title %}GARG GREEN ENERGY{% endblock %}</title>
+
+<meta name="description"
+      content="GARG GREEN ENERGY — Powering a Greener Tomorrow with renewable energy products, solar solutions, installation and service support.">
+
+<meta name="theme-color"
+      content="#0b1f16">
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}">
+```
+
+</head>
+
+<body>
+
+<!-- ================================
+     HEADER / NAVBAR
+================================ -->
+
+<header class="site-header">
+
+```
+<a class="brand"
+   href="{{ url_for('home') }}"
+   aria-label="GARG GREEN ENERGY Home">
+
+    <img
+        src="{{ url_for('static', filename='images/logo.jpg') }}"
+        alt="GARG GREEN ENERGY logo"
+    >
+
+    <div class="brand-text">
+
+        <strong>GARG GREEN ENERGY</strong>
+
+        <span>POWERING A GREENER TOMORROW</span>
+
+    </div>
+
+</a>
+
+
+<button
+    class="menu-toggle"
+    id="menuToggle"
+    aria-label="Open navigation menu"
+    aria-expanded="false"
+    aria-controls="mainNav"
+    type="button"
+>
+
+    <span></span>
+    <span></span>
+    <span></span>
+
+</button>
+
+
+<nav class="main-nav"
+     id="mainNav"
+     aria-label="Main navigation">
+
+    <a href="{{ url_for('home') }}">
+        Home
+    </a>
+
+    <a href="{{ url_for('home') }}#about">
+        About
+    </a>
+
+    <a href="{{ url_for('home') }}#solutions">
+        Solutions
+    </a>
+
+    <a href="{{ url_for('home') }}#products">
+        Products
+    </a>
+
+    <a href="{{ url_for('home') }}#services">
+        Services
+    </a>
+
+    <a href="{{ url_for('projects') }}">
+        Projects
+    </a>
+
+    <a href="{{ url_for('faq') }}">
+        FAQ
+    </a>
+
+    <a href="{{ url_for('contact') }}"
+       class="nav-cta">
+        Contact Us
+    </a>
+
+</nav>
+```
+
+</header>
+
+<!-- ================================
+     PAGE CONTENT
+================================ -->
+
+<main>
+
+```
+{% block content %}{% endblock %}
+```
+
+</main>
+
+<!-- ================================
+     FOOTER
+================================ -->
+
+<footer class="site-footer">
+
+```
+<div class="footer-content">
+
+    <div class="footer-brand">
+
+        <img
+            src="{{ url_for('static', filename='images/logo.jpg') }}"
+            alt="GARG GREEN ENERGY logo"
+        >
+
+        <div>
+
+            <strong>GARG GREEN ENERGY</strong>
+
+            <p>
+                POWERING A GREENER TOMORROW
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-links">
+
+        <a href="{{ url_for('home') }}">
+            Home
+        </a>
+
+        <a href="{{ url_for('home') }}#about">
+            About
+        </a>
+
+        <a href="{{ url_for('home') }}#solutions">
+            Solutions
+        </a>
+
+        <a href="{{ url_for('home') }}#products">
+            Products
+        </a>
+
+        <a href="{{ url_for('home') }}#services">
+            Services
+        </a>
+
+        <a href="{{ url_for('projects') }}">
+            Projects
+        </a>
+
+        <a href="{{ url_for('faq') }}">
+            FAQ
+        </a>
+
+        <a href="{{ url_for('contact') }}">
+            Contact
+        </a>
+
+    </div>
+
+</div>
+
+
+<div class="footer-bottom">
+
+    <p>
+        © 2025 GARG GREEN ENERGY. All rights reserved.
+    </p>
+
+    <p>
+        Renewable Energy • Solar Solutions • Clean Energy
+    </p>
+
+</div>
+```
+
+</footer>
+
+<!-- ================================
+     MOBILE MENU SCRIPT
+================================ -->
+
+<script>
+
+    const menuToggle = document.getElementById("menuToggle");
+    const mainNav = document.getElementById("mainNav");
+
+    if (menuToggle && mainNav) {
+
+        menuToggle.addEventListener("click", function () {
+
+            const isActive = mainNav.classList.toggle("active");
+
+            menuToggle.classList.toggle("active");
+
+            menuToggle.setAttribute(
+                "aria-expanded",
+                isActive ? "true" : "false"
+            );
+
+            menuToggle.setAttribute(
+                "aria-label",
+                isActive
+                    ? "Close navigation menu"
+                    : "Open navigation menu"
+            );
+
+        });
+
+
+        document.querySelectorAll(".main-nav a").forEach(function (link) {
+
+            link.addEventListener("click", function () {
+
+                mainNav.classList.remove("active");
+                menuToggle.classList.remove("active");
+
+                menuToggle.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+                menuToggle.setAttribute(
+                    "aria-label",
+                    "Open navigation menu"
+                );
+
+            });
+
+        });
+
+    }
+
+</script>
+
+</body>
+
+</html>

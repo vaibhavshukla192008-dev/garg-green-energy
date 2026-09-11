@@ -1,0 +1,287 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us | GARG GREEN ENERGY{% endblock %}
+
+{% block content %}
+
+<section class="section contact-page">
+
+    <div class="section-heading">
+        <span>CONTACT GARG GREEN ENERGY</span>
+        <h1>Let's Talk About Your Solar Requirement</h1>
+        <p>
+            Tell us what you need and our team can understand your
+            solar energy requirement.
+        </p>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="contact-grid">
+
+        <!-- CONTACT INFORMATION -->
+
+        <div class="contact-info">
+
+            <div class="contact-card">
+
+                <span>CALL US</span>
+
+                <h2>Speak With Us</h2>
+
+                <p>
+                    For solar products, installation, service and
+                    other renewable-energy requirements.
+                </p>
+
+                <div class="phone-list">
+
+                    <a href="tel:8707074370">
+                        <strong>8707074370</strong>
+                    </a>
+
+                    <a href="tel:7459974370">
+                        <strong>7459974370</strong>
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="contact-card">
+
+                <span>HEAD OFFICE</span>
+
+                <h2>Lucknow</h2>
+
+                <p>
+                    01 First Floor, SK Building,<br>
+                    Near DK Chauraha,<br>
+                    Sanatan Nagar,<br>
+                    Lucknow – 226068
+                </p>
+
+            </div>
+
+
+            <div class="contact-card">
+
+                <span>OTHER LOCATION</span>
+
+                <h2>Azamgarh</h2>
+
+                <p>
+                    Sehda Mahrajpur,<br>
+                    Azamgarh,<br>
+                    Uttar Pradesh
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ENQUIRY FORM -->
+
+        <div class="enquiry-box">
+
+            <div class="form-heading">
+
+                <span>GET A QUOTE</span>
+
+                <h2>Send Your Enquiry</h2>
+
+                <p>
+                    Fill in the details below and tell us about
+                    your requirement.
+                </p>
+
+            </div>
+
+            <form method="POST"
+                  action="{{ url_for('contact') }}">
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="name">
+                            Name *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder="Enter your name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="phone">
+                            Mobile Number *
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            placeholder="Enter mobile number"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="email">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter email address"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="location">
+                            Location
+                        </label>
+
+                        <input
+                            type="text"
+                            id="location"
+                            name="location"
+                            placeholder="City / Area"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="requirement">
+                        Requirement *
+                    </label>
+
+                    <select
+                        id="requirement"
+                        name="requirement"
+                        required
+                    >
+
+                        <option value="">
+                            Select your requirement
+                        </option>
+
+                        <option value="Solar Panels">
+                            Solar Panels
+                        </option>
+
+                        <option value="Solar Inverter">
+                            Solar Inverter
+                        </option>
+
+                        <option value="Complete Solar System">
+                            Complete Solar System
+                        </option>
+
+                        <option value="Installation">
+                            Installation
+                        </option>
+
+                        <option value="Service & Maintenance">
+                            Service & Maintenance
+                        </option>
+
+                        <option value="Other">
+                            Other Solar Requirement
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="message">
+                        Message
+                    </label>
+
+                    <textarea
+                        id="message"
+                        name="message"
+                        rows="6"
+                        placeholder="Tell us about your solar requirement..."
+                    ></textarea>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn btn-primary form-submit"
+                >
+                    Submit Enquiry
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="final-cta">
+
+    <div>
+
+        <span>NEED QUICK ASSISTANCE?</span>
+
+        <h2>Call GARG GREEN ENERGY</h2>
+
+        <p>
+            Speak with us about your solar energy requirement.
+        </p>
+
+    </div>
+
+    <a href="tel:8707074370"
+       class="btn btn-primary">
+        Call Now
+    </a>
+
+</section>
+
+{% endblock %}
