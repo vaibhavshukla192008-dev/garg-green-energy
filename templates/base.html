@@ -5,21 +5,19 @@
 <head>
     <meta charset="utf-8">
 
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1">
+    <title>{% block title %}GARG GREEN ENERGY{% endblock %}</title>
 
-<title>{% block title %}GARG GREEN ENERGY{% endblock %}</title>
+    <meta name="description"
+          content="GARG GREEN ENERGY — Powering a Greener Tomorrow with renewable energy products, solar solutions, installation and service support.">
 
-<meta name="description"
-      content="GARG GREEN ENERGY — Powering a Greener Tomorrow with renewable energy products, solar solutions, installation and service support.">
+    <meta name="theme-color"
+          content="#0b1f16">
 
-<meta name="theme-color"
-      content="#0b1f16">
-
-<link rel="stylesheet"
-      href="{{ url_for('static', filename='css/style.css') }}">
-
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
 
 </head>
 
@@ -31,124 +29,49 @@
 
 <header class="site-header">
 
-
-<a class="brand"
-   href="{{ url_for('home') }}"
-   aria-label="GARG GREEN ENERGY Home">
-
-    <img
-        src="{{ url_for('static', filename='images/logo.jpg') }}"
-        alt="GARG GREEN ENERGY logo"
-    >
-
-    <div class="brand-text">
-
-        <strong>GARG GREEN ENERGY</strong>
-
-        <span>POWERING A GREENER TOMORROW</span>
-
-    </div>
-
-</a>
-
-<button
-    class="menu-toggle"
-    id="menuToggle"
-    aria-label="Open navigation menu"
-    aria-expanded="false"
-    aria-controls="mainNav"
-    type="button"
->
-
-    <span></span>
-    <span></span>
-    <span></span>
-
-</button>
-
-<nav class="main-nav"
-     id="mainNav"
-     aria-label="Main navigation">
-
-    <a href="{{ url_for('home') }}">
-        Home
-    </a>
-
-    <a href="{{ url_for('home') }}#about">
-        About
-    </a>
-
-    <a href="{{ url_for('home') }}#solutions">
-        Solutions
-    </a>
-
-    <a href="{{ url_for('home') }}#products">
-        Products
-    </a>
-
-    <a href="{{ url_for('home') }}#services">
-        Services
-    </a>
-
-    <a href="{{ url_for('projects') }}">
-        Projects
-    </a>
-
-    <a href="{{ url_for('faq') }}">
-        FAQ
-    </a>
-
-    <a href="{{ url_for('contact') }}"
-       class="nav-cta">
-        Contact Us
-    </a>
-
-</nav>
-
-
-</header>
-
-<!-- ================================
-     PAGE CONTENT
-================================ -->
-
-<main>
-
-
-{% block content %}{% endblock %}
-
-
-</main>
-
-<!-- ================================
-     FOOTER
-================================ -->
-
-<footer class="site-footer">
-
-
-<div class="footer-content">
-
-    <div class="footer-brand">
+    <a class="brand"
+       href="{{ url_for('home') }}"
+       aria-label="GARG GREEN ENERGY Home">
 
         <img
             src="{{ url_for('static', filename='images/logo.jpg') }}"
             alt="GARG GREEN ENERGY logo"
         >
 
-        <div>
+        <div class="brand-text">
 
             <strong>GARG GREEN ENERGY</strong>
 
-            <p>
-                POWERING A GREENER TOMORROW
-            </p>
+            <span>POWERING A GREENER TOMORROW</span>
 
         </div>
 
-    </div>
+    </a>
 
-    <div class="footer-links">
+
+    <!-- MOBILE MENU BUTTON -->
+
+    <button
+        class="menu-toggle"
+        id="menuToggle"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="mainNav"
+        type="button"
+    >
+
+        <span></span>
+        <span></span>
+        <span></span>
+
+    </button>
+
+
+    <!-- NAVIGATION -->
+
+    <nav class="main-nav"
+         id="mainNav"
+         aria-label="Main navigation">
 
         <a href="{{ url_for('home') }}">
             Home
@@ -178,28 +101,116 @@
             FAQ
         </a>
 
-        <a href="{{ url_for('contact') }}">
-            Contact
+        <a href="{{ url_for('review') }}">
+            Reviews
         </a>
+
+        <a href="{{ url_for('contact') }}"
+           class="nav-cta">
+            Contact Us
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- ================================
+     PAGE CONTENT
+================================ -->
+
+<main>
+
+    {% block content %}{% endblock %}
+
+</main>
+
+
+<!-- ================================
+     FOOTER
+================================ -->
+
+<footer class="site-footer">
+
+    <div class="footer-content">
+
+        <div class="footer-brand">
+
+            <img
+                src="{{ url_for('static', filename='images/logo.jpg') }}"
+                alt="GARG GREEN ENERGY logo"
+            >
+
+            <div>
+
+                <strong>GARG GREEN ENERGY</strong>
+
+                <p>
+                    POWERING A GREENER TOMORROW
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="{{ url_for('home') }}">
+                Home
+            </a>
+
+            <a href="{{ url_for('home') }}#about">
+                About
+            </a>
+
+            <a href="{{ url_for('home') }}#solutions">
+                Solutions
+            </a>
+
+            <a href="{{ url_for('home') }}#products">
+                Products
+            </a>
+
+            <a href="{{ url_for('home') }}#services">
+                Services
+            </a>
+
+            <a href="{{ url_for('projects') }}">
+                Projects
+            </a>
+
+            <a href="{{ url_for('faq') }}">
+                FAQ
+            </a>
+
+            <a href="{{ url_for('review') }}">
+                Reviews
+            </a>
+
+            <a href="{{ url_for('contact') }}">
+                Contact
+            </a>
+
+        </div>
 
     </div>
 
-</div>
 
-<div class="footer-bottom">
+    <div class="footer-bottom">
 
-    <p>
-        © 2025 GARG GREEN ENERGY. All rights reserved.
-    </p>
+        <p>
+            © 2025 GARG GREEN ENERGY. All rights reserved.
+        </p>
 
-    <p>
-        Renewable Energy • Solar Solutions • Clean Energy
-    </p>
+        <p>
+            Renewable Energy • Solar Solutions • Clean Energy
+        </p>
 
-</div>
-
+    </div>
 
 </footer>
+
 
 <!-- ================================
      MOBILE MENU SCRIPT
@@ -232,11 +243,13 @@
 
         });
 
+
         document.querySelectorAll(".main-nav a").forEach(function (link) {
 
             link.addEventListener("click", function () {
 
                 mainNav.classList.remove("active");
+
                 menuToggle.classList.remove("active");
 
                 menuToggle.setAttribute(
