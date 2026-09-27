@@ -4,198 +4,267 @@
 
 {% block content %}
 
-<section class="section">
-    <div class="section-heading">
-        <span>ABOUT GARG GREEN ENERGY</span>
-        <h1>Powering a Greener Tomorrow</h1>
+<!-- ========================================= -->
+<!-- PAGE HERO -->
+<!-- ========================================= -->
+
+<section class="page-hero">
+
+    <div class="page-hero-container">
+
+        <span class="section-badge">
+            {{ content["about_label"] if content else "WHO WE ARE" }}
+        </span>
+
+        <h1>
+            {{ content["company_name"] if content else "GARG GREEN ENERGY" }}
+        </h1>
+
         <p>
-            GARG GREEN ENERGY is focused on providing solar and
-            renewable energy solutions for different energy requirements.
+            {{ content["tagline"] if content else "POWERING A GREENER TOMORROW" }}
         </p>
+
     </div>
 
-```
-<div class="about-grid">
+</section>
 
-    <div class="about-visual">
-        <div class="about-box">
-            <span>ESTABLISHED</span>
-            <strong>2025</strong>
-            <p>Growing with clean energy</p>
-        </div>
-    </div>
 
-    <div class="about-content">
-        <div class="section-heading left">
-            <span>WHO WE ARE</span>
+<!-- ========================================= -->
+<!-- ABOUT INTRODUCTION -->
+<!-- ========================================= -->
 
-            <h2>Reliable Renewable Energy Solutions</h2>
+<section class="about-section">
+
+    <div class="about-container">
+
+        <div class="about-content">
+
+            <span class="section-badge">
+                {{ content["about_label"] if content else "WHO WE ARE" }}
+            </span>
+
+            <h2>
+                {{ content["about_heading"] if content else "Growing with Clean Energy" }}
+            </h2>
 
             <p>
-                GARG GREEN ENERGY provides renewable energy products,
-                electrical components, installation solutions
-                and service support.
+                {{ content["about_description_1"] if content else
+                "Complete solar energy solutions for homes, businesses, industries, institutions, agriculture and government projects." }}
             </p>
 
             <p>
-                Our offerings cover requirements across homes,
-                shops, offices, factories, schools and institutions,
-                farmers and government projects.
+                {{ content["about_description_2"] if content else
+                "GARG GREEN ENERGY is focused on providing reliable renewable-energy solutions and supporting customers with solar-related products, electrical components, installation, commissioning and service support." }}
             </p>
-        </div>
-
-        <div class="about-points">
-
-            <div>
-                <strong>01</strong>
-                <span>Solar Energy</span>
-            </div>
-
-            <div>
-                <strong>02</strong>
-                <span>Renewable Energy Solutions</span>
-            </div>
-
-            <div>
-                <strong>03</strong>
-                <span>Installation &amp; Commissioning</span>
-            </div>
 
         </div>
-    </div>
 
-</div>
-```
+
+        <!-- ESTABLISHED CARD -->
+
+        <div class="about-highlight-card">
+
+            <div class="about-highlight-icon">
+                ☀️
+            </div>
+
+            <span class="about-highlight-label">
+                ESTABLISHED
+            </span>
+
+            <strong>
+                {{ content["established"] if content else "2025" }}
+            </strong>
+
+            <p>
+                Growing with clean and renewable energy solutions.
+            </p>
+
+        </div>
+
+    </div>
 
 </section>
 
-<section class="section dark-section">
 
-```
-<div class="section-heading light">
+<!-- ========================================= -->
+<!-- ABOUT HIGHLIGHTS -->
+<!-- ========================================= -->
 
-    <span>OUR APPROACH</span>
+<section class="about-details-section">
 
-    <h2>From Products to Support</h2>
+    <div class="about-details-container">
 
-    <p>
-        We bring energy products, system components,
-        installation and ongoing service support together
-        to provide a complete solution.
-    </p>
 
-</div>
+        <!-- FOCUS -->
 
-<div class="why-grid">
+        <div class="about-detail-card">
 
-    <div class="why-item">
-        <div>01</div>
-        <h3>Energy Solutions</h3>
-        <p>
-            Inverters, electrical components, structures
-            and related renewable-energy products.
-        </p>
+            <div class="about-detail-icon">
+                ☀️
+            </div>
+
+            <h3>
+                {{ content["focus_title"] if content else "Our Focus" }}
+            </h3>
+
+            <p>
+                {{ content["focus_description"] if content else
+                "Solar and renewable-energy solutions for homes, shops, offices, factories, institutions, farmers and government project requirements." }}
+            </p>
+
+        </div>
+
+
+        <!-- SOLUTIONS -->
+
+        <div class="about-detail-card">
+
+            <div class="about-detail-icon">
+                ⚡
+            </div>
+
+            <h3>
+                {{ content["solutions_title"] if content else "Our Solutions" }}
+            </h3>
+
+            <p>
+                {{ content["solutions_description"] if content else
+                "Electrical components, installation solutions, commissioning and service support for solar-related requirements." }}
+            </p>
+
+        </div>
+
+
+        <!-- SERVICE -->
+
+        <div class="about-detail-card">
+
+            <div class="about-detail-icon">
+                🛠️
+            </div>
+
+            <h3>
+                {{ content["service_title"] if content else "Service Support" }}
+            </h3>
+
+            <p>
+                {{ content["service_description"] if content else
+                "We provide installation, commissioning and ongoing service support according to customer requirements." }}
+            </p>
+
+        </div>
+
     </div>
-
-    <div class="why-item">
-        <div>02</div>
-        <h3>Installation &amp; Commissioning</h3>
-        <p>
-            Installation and commissioning support for
-            renewable and solar energy systems.
-        </p>
-    </div>
-
-    <div class="why-item">
-        <div>03</div>
-        <h3>Connectivity Support</h3>
-        <p>
-            Remote connectivity and Wi-Fi support for
-            supported solar systems.
-        </p>
-    </div>
-
-    <div class="why-item">
-        <div>04</div>
-        <h3>Service &amp; Maintenance</h3>
-        <p>
-            Preventive service, on-site visits and
-            applicable breakdown-call support during
-            the warranty period.
-        </p>
-    </div>
-
-</div>
-```
 
 </section>
 
-<section class="section location-section">
 
-```
-<div class="section-heading">
+<!-- ========================================= -->
+<!-- LOCATION -->
+<!-- ========================================= -->
 
-    <span>WHERE WE ARE</span>
+<section class="about-location-section">
 
-    <h2>Our Locations</h2>
+    <div class="about-location-container">
 
-</div>
 
-<div class="location-grid">
+        <div class="about-location-content">
 
-    <div class="location-card">
+            <span class="section-badge">
+                OUR LOCATION
+            </span>
 
-        <small>HEAD OFFICE</small>
+            <h2>
+                {{ content["location_heading"] if content else "Where We Are" }}
+            </h2>
 
-        <h3>Lucknow</h3>
+            <p>
+                {{ content["location_description"] if content else
+                "Our head office is located in Lucknow, Uttar Pradesh." }}
+            </p>
 
-        <p>
-            01 First Floor, SK Building,<br>
-            Near DK Chauraha,<br>
-            Sanatan Nagar, Lucknow – 226068
-        </p>
+        </div>
+
+
+        <!-- HEAD OFFICE -->
+
+        <div class="about-location-card">
+
+            <div class="about-location-icon">
+                📍
+            </div>
+
+            <h3>
+                Head Office
+            </h3>
+
+            <p>
+                {{ content["head_office"] if content else
+                "01 First Floor, SK Building, Near DK Chauraha, Sanatan Nagar, Lucknow – 226068" }}
+            </p>
+
+        </div>
+
+
+        <!-- OTHER LOCATION -->
+
+        {% if content and content["other_location"] %}
+
+        <div class="about-location-card">
+
+            <div class="about-location-icon">
+                📍
+            </div>
+
+            <h3>
+                Other Location
+            </h3>
+
+            <p>
+                {{ content["other_location"] }}
+            </p>
+
+        </div>
+
+        {% endif %}
+
 
     </div>
-
-    <div class="location-card">
-
-        <small>OTHER LOCATION</small>
-
-        <h3>Azamgarh</h3>
-
-        <p>
-            Sehda Mahrajpur,<br>
-            Azamgarh, Uttar Pradesh
-        </p>
-
-    </div>
-
-</div>
-```
 
 </section>
 
-<section class="final-cta">
 
-```
-<div>
+<!-- ========================================= -->
+<!-- CTA -->
+<!-- ========================================= -->
 
-    <span>GARG GREEN ENERGY</span>
+<section class="about-cta-section">
 
-    <h2>Let's Build a Cleaner Energy Future.</h2>
+    <div class="about-cta-container">
 
-    <p>
-        Explore our renewable energy products,
-        solutions and services.
-    </p>
+        <span class="section-badge">
+            {{ content["cta_label"] if content else "LET'S WORK TOGETHER" }}
+        </span>
 
-</div>
+        <h2>
+            {{ content["cta_heading"] if content else
+            "Looking for a Reliable Energy Solution?" }}
+        </h2>
 
-<a href="{{ url_for('home') }}#contact"
-   class="btn btn-primary">
-    Contact Us
-</a>
-```
+        <p>
+            {{ content["cta_description"] if content else
+            "Get in touch with GARG GREEN ENERGY for your solar and renewable-energy requirements." }}
+        </p>
+
+        <a
+            href="{{ url_for('contact') }}"
+            class="primary-btn"
+        >
+            Get a Quote
+        </a>
+
+    </div>
 
 </section>
 

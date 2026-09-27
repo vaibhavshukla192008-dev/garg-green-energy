@@ -1,0 +1,436 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard | GARG GREEN ENERGY{% endblock %}
+
+{% block content %}
+
+<style>
+    .admin-dashboard-section {
+        min-height: calc(100vh - 140px);
+        padding: 70px 24px 90px;
+        background:
+            radial-gradient(circle at top right, rgba(55, 170, 91, 0.10), transparent 35%),
+            #f4f8f5;
+    }
+
+    .admin-dashboard-container {
+        width: min(1180px, 100%);
+        margin: 0 auto;
+    }
+
+    .admin-dashboard-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 30px;
+        margin-bottom: 38px;
+    }
+
+    .admin-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 14px;
+        border: 1px solid rgba(39, 143, 73, 0.22);
+        border-radius: 999px;
+        background: rgba(39, 143, 73, 0.08);
+        color: #258744;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+    }
+
+    .admin-dashboard-header h1 {
+        margin: 14px 0 8px;
+        color: #10251a;
+        font-size: clamp(38px, 5vw, 58px);
+        line-height: 1;
+        letter-spacing: -0.04em;
+    }
+
+    .admin-dashboard-header p {
+        margin: 0;
+        color: #63736a;
+        font-size: 16px;
+        line-height: 1.7;
+    }
+
+    .admin-logout-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 105px;
+        padding: 12px 20px;
+        border: 1px solid #d9e4dc;
+        border-radius: 12px;
+        background: #ffffff;
+        color: #193025;
+        font-weight: 700;
+        text-decoration: none;
+        transition: 0.2s ease;
+        box-shadow: 0 8px 25px rgba(18, 48, 31, 0.05);
+    }
+
+    .admin-logout-btn:hover {
+        transform: translateY(-2px);
+        border-color: #2c934d;
+        color: #238342;
+        box-shadow: 0 12px 30px rgba(18, 48, 31, 0.10);
+    }
+
+    .admin-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+        margin-bottom: 28px;
+    }
+
+    .admin-stat-card {
+        position: relative;
+        overflow: hidden;
+        padding: 27px 28px;
+        border: 1px solid #dce7df;
+        border-radius: 20px;
+        background: #ffffff;
+        box-shadow: 0 12px 35px rgba(18, 48, 31, 0.06);
+    }
+
+    .admin-stat-card::after {
+        content: "";
+        position: absolute;
+        width: 90px;
+        height: 90px;
+        right: -35px;
+        top: -35px;
+        border-radius: 50%;
+        background: rgba(67, 174, 92, 0.09);
+    }
+
+    .admin-stat-number {
+        display: block;
+        color: #176c36;
+        font-size: 38px;
+        line-height: 1;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+    }
+
+    .admin-stat-label {
+        display: block;
+        margin-top: 10px;
+        color: #66766d;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .admin-dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+    }
+
+    .admin-feature-card {
+        padding: 30px;
+        border: 1px solid #dce7df;
+        border-radius: 20px;
+        background: #ffffff;
+        box-shadow: 0 12px 35px rgba(18, 48, 31, 0.06);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .admin-feature-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 18px 42px rgba(18, 48, 31, 0.10);
+    }
+
+    .admin-feature-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 52px;
+        height: 52px;
+        margin-bottom: 22px;
+        border-radius: 15px;
+        background: #eaf7ee;
+        font-size: 23px;
+    }
+
+    .admin-feature-card h3 {
+        margin: 0 0 9px;
+        color: #10251a;
+        font-size: 22px;
+        letter-spacing: -0.02em;
+    }
+
+    .admin-feature-card p {
+        min-height: 52px;
+        margin: 0 0 22px;
+        color: #6b7b72;
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .admin-feature-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 11px 17px;
+        border-radius: 10px;
+        background: #2d934c;
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: 0.2s ease;
+    }
+
+    .admin-feature-btn:hover {
+        background: #22783d;
+        transform: translateY(-1px);
+    }
+
+    .admin-coming-soon {
+        display: inline-flex;
+        align-items: center;
+        padding: 9px 14px;
+        border-radius: 10px;
+        background: #f0f3f1;
+        color: #718078;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .admin-dashboard-note {
+        margin-top: 22px;
+        padding: 24px 28px;
+        border: 1px solid #cfe3d5;
+        border-left: 4px solid #2d934c;
+        border-radius: 16px;
+        background: #eef8f1;
+    }
+
+    .admin-dashboard-note strong {
+        display: block;
+        margin-bottom: 7px;
+        color: #173725;
+        font-size: 16px;
+    }
+
+    .admin-dashboard-note p {
+        margin: 0;
+        color: #617269;
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    @media (max-width: 800px) {
+        .admin-dashboard-section {
+            padding: 48px 18px 70px;
+        }
+
+        .admin-dashboard-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .admin-logout-btn {
+            width: 100%;
+        }
+
+        .admin-stats {
+            grid-template-columns: 1fr;
+        }
+
+        .admin-dashboard-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .admin-dashboard-header h1 {
+            font-size: 40px;
+        }
+
+        .admin-stat-card,
+        .admin-feature-card {
+            padding: 23px;
+        }
+    }
+</style>
+
+<section class="admin-dashboard-section">
+
+    <div class="admin-dashboard-container">
+
+        <div class="admin-dashboard-header">
+
+            <div>
+                <span class="admin-badge">
+                    ADMIN PANEL
+                </span>
+
+                <h1>Dashboard</h1>
+
+                <p>
+                    Manage your GARG GREEN ENERGY website from one place.
+                </p>
+            </div>
+
+            <a
+                href="{{ url_for('admin_logout') }}"
+                class="admin-logout-btn"
+            >
+                Logout
+            </a>
+
+        </div>
+
+
+        <div class="admin-stats">
+
+            <div class="admin-stat-card">
+                <span class="admin-stat-number">
+                    {{ total_enquiries }}
+                </span>
+
+                <span class="admin-stat-label">
+                    Total Enquiries
+                </span>
+            </div>
+
+
+            <div class="admin-stat-card">
+                <span class="admin-stat-number">
+                    {{ new_enquiries }}
+                </span>
+
+                <span class="admin-stat-label">
+                    New Enquiries
+                </span>
+            </div>
+
+
+            <div class="admin-stat-card">
+                <span class="admin-stat-number">
+                    {{ pending_reviews }}
+                </span>
+
+                <span class="admin-stat-label">
+                    Pending Reviews
+                </span>
+            </div>
+
+        </div>
+
+
+        <div class="admin-dashboard-grid">
+
+            <div class="admin-feature-card">
+
+                <div class="admin-feature-icon">
+                    📩
+                </div>
+
+                <h3>Enquiries</h3>
+
+                <p>
+                    View and manage customer enquiries submitted
+                    through the website.
+                </p>
+
+                <a
+                    href="{{ url_for('admin_enquiries') }}"
+                    class="admin-feature-btn"
+                >
+                    View Enquiries
+                </a>
+
+            </div>
+
+
+            <div class="admin-feature-card">
+
+                <div class="admin-feature-icon">
+                    ⭐
+                </div>
+
+                <h3>Reviews</h3>
+
+                <p>
+                    Review customer submissions and manage
+                    approved website reviews.
+                </p>
+
+                <a
+                    href="{{ url_for('admin_reviews') }}"
+                    class="admin-feature-btn"
+                >
+                    View Reviews
+                </a>
+
+            </div>
+
+
+            <div class="admin-feature-card">
+
+                <div class="admin-feature-icon">
+                    🖼️
+                </div>
+
+                <h3>Website Content</h3>
+
+                <p>
+                    Manage important website content and
+                    business information.
+                </p>
+
+                <a
+                    href="{{ url_for('admin_content') }}"
+                    class="admin-feature-btn"
+                >
+                    Edit Website Content
+                </a>
+
+            </div>
+
+
+            <div class="admin-feature-card">
+
+                <div class="admin-feature-icon">
+                    ⚙️
+                </div>
+
+                <h3>Settings</h3>
+
+                <p>
+                    Manage administrative and website settings
+                    securely.
+                </p>
+
+                <span class="admin-coming-soon">
+                    Coming Next
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="admin-dashboard-note">
+
+            <strong>
+                Admin Panel Foundation
+            </strong>
+
+            <p>
+                The admin login, dashboard, enquiry management,
+                customer review management and website content
+                management are now connected to your Flask application.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

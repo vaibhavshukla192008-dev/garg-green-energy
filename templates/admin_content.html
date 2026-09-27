@@ -1,0 +1,858 @@
+{% extends "base.html" %}
+
+{% block title %}Website Content | Admin Panel | GARG GREEN ENERGY{% endblock %}
+
+{% block content %}
+
+<style>
+    .content-page {
+        padding: 42px 20px 70px;
+        background: #f4f8f5;
+        min-height: calc(100vh - 80px);
+    }
+
+    .content-container {
+        width: min(1100px, 100%);
+        margin: 0 auto;
+    }
+
+    .content-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 25px;
+        margin-bottom: 30px;
+    }
+
+    .content-header-left {
+        flex: 1;
+    }
+
+    .admin-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 7px 13px;
+        border-radius: 999px;
+        background: #e5f6eb;
+        color: #168044;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        margin-bottom: 12px;
+    }
+
+    .content-header h1 {
+        margin: 0;
+        color: #14231a;
+        font-size: clamp(30px, 5vw, 44px);
+        line-height: 1.1;
+        font-weight: 800;
+    }
+
+    .content-header p {
+        margin: 10px 0 0;
+        color: #68756d;
+        font-size: 15px;
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .header-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 0 17px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 700;
+        transition: 0.2s ease;
+    }
+
+    .dashboard-btn {
+        background: #ffffff;
+        color: #1c6f3d;
+        border: 1px solid #d7e5db;
+    }
+
+    .dashboard-btn:hover {
+        background: #edf8f0;
+    }
+
+    .logout-btn {
+        background: #183d28;
+        color: #ffffff;
+    }
+
+    .logout-btn:hover {
+        background: #0f2c1c;
+        transform: translateY(-1px);
+    }
+
+    .editor-card {
+        background: #ffffff;
+        border: 1px solid #e1eae4;
+        border-radius: 20px;
+        box-shadow: 0 10px 35px rgba(20, 60, 35, 0.07);
+        overflow: hidden;
+    }
+
+    .editor-top {
+        padding: 27px 30px;
+        border-bottom: 1px solid #e8eee9;
+        background: linear-gradient(135deg, #ffffff, #f7fbf8);
+    }
+
+    .editor-top .admin-badge {
+        margin-bottom: 10px;
+    }
+
+    .editor-top h2 {
+        margin: 0;
+        color: #17251c;
+        font-size: 24px;
+    }
+
+    .editor-top p {
+        margin: 7px 0 0;
+        color: #718078;
+        font-size: 14px;
+    }
+
+    .content-form {
+        padding: 30px;
+    }
+
+    .content-section {
+        padding: 25px;
+        margin-bottom: 22px;
+        border: 1px solid #e2ebe5;
+        border-radius: 16px;
+        background: #fbfdfb;
+    }
+
+    .section-heading {
+        padding-bottom: 18px;
+        margin-bottom: 21px;
+        border-bottom: 1px solid #e7eee9;
+    }
+
+    .section-heading .admin-badge {
+        margin-bottom: 8px;
+    }
+
+    .section-heading h3 {
+        margin: 0;
+        color: #203027;
+        font-size: 20px;
+    }
+
+    .section-heading p {
+        margin: 6px 0 0;
+        color: #77847c;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .form-group {
+        margin-bottom: 19px;
+    }
+
+    .form-group:last-child {
+        margin-bottom: 0;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #25352c;
+        font-size: 14px;
+        font-weight: 750;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid #d9e4dc;
+        border-radius: 10px;
+        background: #ffffff;
+        color: #1d2922;
+        font-family: inherit;
+        font-size: 14px;
+        outline: none;
+        transition: 0.2s ease;
+    }
+
+    .form-group input {
+        height: 48px;
+        padding: 0 14px;
+    }
+
+    .form-group textarea {
+        min-height: 115px;
+        padding: 13px 14px;
+        line-height: 1.6;
+        resize: vertical;
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+        color: #a0aaa4;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+        border-color: #2f9b59;
+        box-shadow: 0 0 0 3px rgba(47, 155, 89, 0.10);
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        padding-top: 8px;
+    }
+
+    .save-btn,
+    .cancel-btn {
+        min-height: 48px;
+        padding: 0 22px;
+        border-radius: 10px;
+        border: 0;
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 800;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.2s ease;
+    }
+
+    .save-btn {
+        background: #1f8a4c;
+        color: #ffffff;
+        box-shadow: 0 6px 16px rgba(31, 138, 76, 0.20);
+    }
+
+    .save-btn:hover {
+        background: #17723d;
+        transform: translateY(-1px);
+    }
+
+    .cancel-btn {
+        background: #eef3ef;
+        color: #365044;
+        border: 1px solid #dce6df;
+    }
+
+    .cancel-btn:hover {
+        background: #e3ebe5;
+    }
+
+    .info-note {
+        margin-top: 22px;
+        padding: 20px 22px;
+        border: 1px solid #d9eadf;
+        border-radius: 14px;
+        background: #eff9f2;
+    }
+
+    .info-note strong {
+        color: #21683d;
+        font-size: 14px;
+    }
+
+    .info-note p {
+        margin: 6px 0 0;
+        color: #607268;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    @media (max-width: 700px) {
+        .content-page {
+            padding: 25px 13px 50px;
+        }
+
+        .content-header {
+            align-items: stretch;
+            flex-direction: column;
+            margin-bottom: 22px;
+        }
+
+        .header-actions {
+            width: 100%;
+        }
+
+        .header-btn {
+            flex: 1;
+        }
+
+        .editor-top,
+        .content-form {
+            padding: 20px;
+        }
+
+        .content-section {
+            padding: 18px;
+        }
+
+        .section-heading h3 {
+            font-size: 18px;
+        }
+
+        .form-actions {
+            flex-direction: column-reverse;
+        }
+
+        .save-btn,
+        .cancel-btn {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 430px) {
+        .header-actions {
+            flex-direction: column;
+        }
+
+        .header-btn {
+            width: 100%;
+        }
+
+        .content-header h1 {
+            font-size: 31px;
+        }
+    }
+</style>
+
+<section class="content-page">
+
+    <div class="content-container">
+
+        <!-- HEADER -->
+        <div class="content-header">
+
+            <div class="content-header-left">
+
+                <span class="admin-badge">
+                    ADMIN PANEL
+                </span>
+
+                <h1>Website Content</h1>
+
+                <p>
+                    Manage the information displayed across your website.
+                </p>
+
+            </div>
+
+            <div class="header-actions">
+
+                <a
+                    href="{{ url_for('admin_dashboard') }}"
+                    class="header-btn dashboard-btn"
+                >
+                    ← Dashboard
+                </a>
+
+                <a
+                    href="{{ url_for('admin_logout') }}"
+                    class="header-btn logout-btn"
+                >
+                    Logout
+                </a>
+
+            </div>
+
+        </div>
+
+        <!-- EDITOR -->
+        <div class="editor-card">
+
+            <div class="editor-top">
+
+                <span class="admin-badge">
+                    WEBSITE CONTENT
+                </span>
+
+                <h2>Edit Website Information</h2>
+
+                <p>
+                    Changes saved here will be stored in the website database.
+                </p>
+
+            </div>
+
+            <form
+                method="POST"
+                action="{{ url_for('admin_content') }}"
+                class="content-form"
+            >
+
+                <!-- COMPANY INFORMATION -->
+                <div class="content-section">
+
+                    <div class="section-heading">
+
+                        <span class="admin-badge">
+                            COMPANY INFORMATION
+                        </span>
+
+                        <h3>Basic Business Details</h3>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="company_name">
+                            Company Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="company_name"
+                            name="company_name"
+                            value="{{ content['company_name'] if content else '' }}"
+                            placeholder="Enter company name"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="tagline">
+                            Tagline
+                        </label>
+
+                        <input
+                            type="text"
+                            id="tagline"
+                            name="tagline"
+                            value="{{ content['tagline'] if content else '' }}"
+                            placeholder="Enter company tagline"
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="established">
+                            Established
+                        </label>
+
+                        <input
+                            type="text"
+                            id="established"
+                            name="established"
+                            value="{{ content['established'] if content else '' }}"
+                            placeholder="Example: 2025"
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="description">
+                            Company Description
+                        </label>
+
+                        <textarea
+                            id="description"
+                            name="description"
+                            rows="6"
+                            placeholder="Enter company description"
+                        >{{ content['description'] if content else '' }}</textarea>
+
+                    </div>
+
+                </div>
+
+                <!-- ABOUT PAGE -->
+                <div class="content-section">
+
+                    <div class="section-heading">
+
+                        <span class="admin-badge">
+                            ABOUT PAGE
+                        </span>
+
+                        <h3>Who We Are</h3>
+
+                        <p>
+                            These fields control the main content shown on the About page.
+                        </p>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="about_label">
+                            Section Label
+                        </label>
+
+                        <input
+                            type="text"
+                            id="about_label"
+                            name="about_label"
+                            value="{{ content['about_label'] if content else 'WHO WE ARE' }}"
+                            placeholder="Example: WHO WE ARE"
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="about_heading">
+                            About Heading
+                        </label>
+
+                        <input
+                            type="text"
+                            id="about_heading"
+                            name="about_heading"
+                            value="{{ content['about_heading'] if content else 'Growing with Clean Energy' }}"
+                            placeholder="Enter About page heading"
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="about_description_1">
+                            About Description 1
+                        </label>
+
+                        <textarea
+                            id="about_description_1"
+                            name="about_description_1"
+                            rows="5"
+                            placeholder="Enter the first About paragraph"
+                        >{{ content['about_description_1'] if content else '' }}</textarea>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="about_description_2">
+                            About Description 2
+                        </label>
+
+                        <textarea
+                            id="about_description_2"
+                            name="about_description_2"
+                            rows="5"
+                            placeholder="Enter the second About paragraph"
+                        >{{ content['about_description_2'] if content else '' }}</textarea>
+
+                    </div>
+
+                </div>
+
+                <!-- ABOUT HIGHLIGHTS -->
+                <div class="content-section">
+
+                    <div class="section-heading">
+
+                        <span class="admin-badge">
+                            ABOUT HIGHLIGHTS
+                        </span>
+
+                        <h3>Focus & Services</h3>
+
+                        <p>
+                            Edit the three information cards displayed on the About page.
+                        </p>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="focus_title">
+                            Focus Title
+                        </label>
+
+                        <input
+                            type="text"
+                            id="focus_title"
+                            name="focus_title"
+                            value="{{ content['focus_title'] if content else 'Our Focus' }}"
+                            placeholder="Example: Our Focus"
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="focus_description">
+                            Focus Description
+                        </label>
+
+                        <textarea
+                            id="focus_description"
+                            name="focus_description"
+                            rows="5"
+                            placeholder="Enter focus description"
+                        >{{ content['focus_description'] if content else '' }}</textarea>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="solutions_title">
+                            Solutions Title
+                        </label>
+
+                        <input
+                            type="text"
+                            id="solutions_title"
+                            name="solutions_title"
+                            value="{{ content['solutions_title'] if content else 'Our Solutions' }}"
+                            placeholder="Example: Our Solutions"
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="solutions_description">
+                            Solutions Description
+                        </label>
+
+                        <textarea
+                            id="solutions_description"
+                            name="solutions_description"
+                            rows="5"
+                            placeholder="Enter solutions description"
+                        >{{ content['solutions_description'] if content else '' }}</textarea>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="service_title">
+                            Service Title
+                        </label>
+
+                        <input
+                            type="text"
+                            id="service_title"
+                            name="service_title"
+                            value="{{ content['service_title'] if content else 'Service Support' }}"
+                            placeholder="Example: Service Support"
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="service_description">
+                            Service Description
+                        </label>
+
+                        <textarea
+                            id="service_description"
+                            name="service_description"
+                            rows="5"
+                            placeholder="Enter service description"
+                        >{{ content['service_description'] if content else '' }}</textarea>
+
+                    </div>
+
+                </div>
+
+                <!-- LOCATION -->
+                <div class="content-section">
+
+                    <div class="section-heading">
+
+                        <span class="admin-badge">
+                            LOCATION
+                        </span>
+
+                        <h3>Business Locations</h3>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="location_heading">
+                            Location Heading
+                        </label>
+
+                        <input
+                            type="text"
+                            id="location_heading"
+                            name="location_heading"
+                            value="{{ content['location_heading'] if content else 'Where We Are' }}"
+                            placeholder="Example: Where We Are"
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="location_description">
+                            Location Description
+                        </label>
+
+                        <textarea
+                            id="location_description"
+                            name="location_description"
+                            rows="4"
+                            placeholder="Enter location introduction"
+                        >{{ content['location_description'] if content else '' }}</textarea>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="head_office">
+                            Head Office
+                        </label>
+
+                        <textarea
+                            id="head_office"
+                            name="head_office"
+                            rows="3"
+                            placeholder="Enter head office address"
+                        >{{ content['head_office'] if content else '' }}</textarea>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="other_location">
+                            Other Location
+                        </label>
+
+                        <input
+                            type="text"
+                            id="other_location"
+                            name="other_location"
+                            value="{{ content['other_location'] if content else '' }}"
+                            placeholder="Enter other business location"
+                        >
+
+                    </div>
+
+                </div>
+
+                <!-- CALL TO ACTION -->
+                <div class="content-section">
+
+                    <div class="section-heading">
+
+                        <span class="admin-badge">
+                            CALL TO ACTION
+                        </span>
+
+                        <h3>About Page CTA</h3>
+
+                        <p>
+                            Edit the final section displayed at the bottom of the About page.
+                        </p>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="cta_label">
+                            CTA Label
+                        </label>
+
+                        <input
+                            type="text"
+                            id="cta_label"
+                            name="cta_label"
+                            value="{{ content['cta_label'] if content else 'LET\'S WORK TOGETHER' }}"
+                            placeholder="Example: LET'S WORK TOGETHER"
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="cta_heading">
+                            CTA Heading
+                        </label>
+
+                        <input
+                            type="text"
+                            id="cta_heading"
+                            name="cta_heading"
+                            value="{{ content['cta_heading'] if content else 'Looking for a Reliable Energy Solution?' }}"
+                            placeholder="Enter CTA heading"
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="cta_description">
+                            CTA Description
+                        </label>
+
+                        <textarea
+                            id="cta_description"
+                            name="cta_description"
+                            rows="4"
+                            placeholder="Enter CTA description"
+                        >{{ content['cta_description'] if content else '' }}</textarea>
+
+                    </div>
+
+                </div>
+
+                <!-- ACTIONS -->
+                <div class="form-actions">
+
+                    <a
+                        href="{{ url_for('admin_dashboard') }}"
+                        class="cancel-btn"
+                    >
+                        Cancel
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="save-btn"
+                    >
+                        Save Website Content
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+        <!-- NOTE -->
+        <div class="info-note">
+
+            <strong>
+                Content Management
+            </strong>
+
+            <p>
+                Company information, About page content, highlights,
+                locations and About page call-to-action can be managed
+                from this section.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

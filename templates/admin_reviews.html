@@ -1,0 +1,792 @@
+{% extends "base.html" %}
+
+{% block title %}Reviews | Admin Panel | GARG GREEN ENERGY{% endblock %}
+
+{% block content %}
+
+<style>
+    .admin-reviews-page {
+        min-height: calc(100vh - 140px);
+        padding: 65px 24px 90px;
+        background:
+            radial-gradient(circle at top right, rgba(55, 170, 91, 0.10), transparent 35%),
+            #f4f8f5;
+    }
+
+    .admin-reviews-container {
+        width: min(1250px, 100%);
+        margin: 0 auto;
+    }
+
+    .reviews-page-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 28px;
+        margin-bottom: 32px;
+    }
+
+    .admin-badge {
+        display: inline-flex;
+        padding: 8px 14px;
+        border: 1px solid rgba(39, 143, 73, 0.22);
+        border-radius: 999px;
+        background: rgba(39, 143, 73, 0.08);
+        color: #258744;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+    }
+
+    .reviews-page-header h1 {
+        margin: 14px 0 8px;
+        color: #10251a;
+        font-size: clamp(36px, 5vw, 54px);
+        line-height: 1;
+        letter-spacing: -0.04em;
+    }
+
+    .reviews-page-header p {
+        margin: 0;
+        color: #63736a;
+        font-size: 16px;
+        line-height: 1.7;
+    }
+
+    .admin-header-actions {
+        display: flex;
+        gap: 10px;
+        flex-shrink: 0;
+    }
+
+    .admin-back-btn,
+    .admin-logout-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 11px 17px;
+        border-radius: 11px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 700;
+        transition: 0.2s ease;
+    }
+
+    .admin-back-btn {
+        border: 1px solid #d8e4dc;
+        background: #ffffff;
+        color: #20362a;
+    }
+
+    .admin-back-btn:hover {
+        border-color: #2d934c;
+        color: #238342;
+        transform: translateY(-1px);
+    }
+
+    .admin-logout-btn {
+        border: 1px solid #2d934c;
+        background: #2d934c;
+        color: #ffffff;
+    }
+
+    .admin-logout-btn:hover {
+        background: #22783d;
+        transform: translateY(-1px);
+    }
+
+    .admin-review-filter {
+        margin-bottom: 26px;
+        padding: 24px;
+        border: 1px solid #dce7df;
+        border-radius: 20px;
+        background: #ffffff;
+        box-shadow: 0 12px 35px rgba(18, 48, 31, 0.06);
+    }
+
+    .admin-review-filter form {
+        display: flex;
+        align-items: flex-end;
+        gap: 16px;
+    }
+
+    .review-filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-width: 220px;
+    }
+
+    .review-filter-group label {
+        color: #31473a;
+        font-size: 13px;
+        font-weight: 750;
+    }
+
+    .review-filter-group select {
+        height: 46px;
+        padding: 0 14px;
+        border: 1px solid #d4e0d8;
+        border-radius: 10px;
+        outline: none;
+        background: #fbfdfb;
+        color: #17291f;
+        font: inherit;
+    }
+
+    .review-filter-group select:focus {
+        border-color: #2d934c;
+        box-shadow: 0 0 0 3px rgba(45, 147, 76, 0.10);
+    }
+
+    .admin-filter-actions {
+        display: flex;
+        gap: 9px;
+    }
+
+    .admin-filter-btn,
+    .admin-clear-filter-btn {
+        height: 46px;
+        padding: 0 17px;
+        border-radius: 10px;
+        font: inherit;
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        transition: 0.2s ease;
+    }
+
+    .admin-filter-btn {
+        border: 1px solid #2d934c;
+        background: #2d934c;
+        color: #ffffff;
+    }
+
+    .admin-filter-btn:hover {
+        background: #22783d;
+    }
+
+    .admin-clear-filter-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #d8e4dc;
+        background: #ffffff;
+        color: #53655b;
+    }
+
+    .admin-clear-filter-btn:hover {
+        color: #238342;
+        border-color: #2d934c;
+    }
+
+    .reviews-card {
+        overflow: hidden;
+        border: 1px solid #dce7df;
+        border-radius: 20px;
+        background: #ffffff;
+        box-shadow: 0 12px 35px rgba(18, 48, 31, 0.06);
+    }
+
+    .reviews-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 24px 26px;
+        border-bottom: 1px solid #e5ece7;
+    }
+
+    .reviews-card-header h2 {
+        margin: 0;
+        color: #10251a;
+        font-size: 22px;
+    }
+
+    .review-count {
+        display: inline-flex;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: #eaf7ee;
+        color: #257c40;
+        font-size: 13px;
+        font-weight: 750;
+    }
+
+    .reviews-table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .reviews-table {
+        width: 100%;
+        min-width: 980px;
+        border-collapse: collapse;
+    }
+
+    .reviews-table th {
+        padding: 15px 17px;
+        background: #f7faf8;
+        color: #5d6e64;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-align: left;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .reviews-table td {
+        padding: 18px 17px;
+        border-top: 1px solid #edf1ee;
+        color: #35473d;
+        font-size: 14px;
+        vertical-align: middle;
+    }
+
+    .reviews-table tbody tr {
+        transition: background 0.2s ease;
+    }
+
+    .reviews-table tbody tr:hover {
+        background: #f8fbf9;
+    }
+
+    .review-customer {
+        color: #182d20;
+        font-weight: 750;
+    }
+
+    .review-id {
+        color: #75847b;
+        font-weight: 700;
+    }
+
+    .review-stars {
+        display: block;
+        color: #e4a51b;
+        font-size: 17px;
+        letter-spacing: 2px;
+        white-space: nowrap;
+    }
+
+    .review-rating-number {
+        display: block;
+        margin-top: 3px;
+        color: #718078;
+        font-size: 12px;
+    }
+
+    .admin-review-text {
+        max-width: 310px;
+        color: #34473c;
+        line-height: 1.6;
+    }
+
+    .admin-status-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .status-pending {
+        background: #fff4dc;
+        color: #996b17;
+    }
+
+    .status-approved {
+        background: #e7f7ec;
+        color: #20783b;
+    }
+
+    .status-rejected {
+        background: #fdebea;
+        color: #a6423d;
+    }
+
+    .admin-review-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+        min-width: 205px;
+    }
+
+    .admin-review-actions form {
+        margin: 0;
+    }
+
+    .admin-review-actions button {
+        min-height: 34px;
+        padding: 7px 11px;
+        border-radius: 8px;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 750;
+        cursor: pointer;
+        transition: 0.2s ease;
+    }
+
+    .admin-review-approve {
+        border: 1px solid #2d934c;
+        background: #2d934c;
+        color: #ffffff;
+    }
+
+    .admin-review-approve:hover {
+        background: #22783d;
+    }
+
+    .admin-review-reject {
+        border: 1px solid #e1a23b;
+        background: #fff8e9;
+        color: #9a6915;
+    }
+
+    .admin-review-reject:hover {
+        background: #fff0ce;
+    }
+
+    .admin-review-delete {
+        border: 1px solid #d9aaa7;
+        background: #fff5f4;
+        color: #a0443e;
+    }
+
+    .admin-review-delete:hover {
+        background: #fde5e3;
+    }
+
+    .admin-empty-state {
+        padding: 70px 25px;
+        border: 1px solid #dce7df;
+        border-radius: 20px;
+        background: #ffffff;
+        text-align: center;
+        box-shadow: 0 12px 35px rgba(18, 48, 31, 0.06);
+    }
+
+    .admin-empty-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 18px;
+        border-radius: 18px;
+        background: #eaf7ee;
+        font-size: 28px;
+    }
+
+    .admin-empty-state h2 {
+        margin: 0 0 8px;
+        color: #10251a;
+        font-size: 26px;
+    }
+
+    .admin-empty-state p {
+        margin: 0 0 24px;
+        color: #6a7971;
+        font-size: 14px;
+    }
+
+    @media (max-width: 800px) {
+        .admin-reviews-page {
+            padding: 45px 18px 70px;
+        }
+
+        .reviews-page-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .admin-header-actions {
+            width: 100%;
+        }
+
+        .admin-back-btn,
+        .admin-logout-btn {
+            flex: 1;
+        }
+
+        .admin-review-filter form {
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+        .review-filter-group {
+            width: 100%;
+        }
+
+        .admin-filter-actions {
+            width: 100%;
+        }
+
+        .admin-filter-btn,
+        .admin-clear-filter-btn {
+            flex: 1;
+        }
+    }
+
+    @media (max-width: 500px) {
+        .reviews-page-header h1 {
+            font-size: 38px;
+        }
+
+        .admin-review-filter {
+            padding: 18px;
+        }
+
+        .reviews-card-header {
+            padding: 20px;
+        }
+    }
+</style>
+
+<section class="admin-reviews-page">
+
+    <div class="admin-reviews-container">
+
+        <div class="reviews-page-header">
+
+            <div>
+
+                <span class="admin-badge">
+                    ADMIN PANEL
+                </span>
+
+                <h1>
+                    Customer Reviews
+                </h1>
+
+                <p>
+                    Review, approve or remove customer feedback.
+                </p>
+
+            </div>
+
+            <div class="admin-header-actions">
+
+                <a
+                    href="{{ url_for('admin_dashboard') }}"
+                    class="admin-back-btn"
+                >
+                    ← Dashboard
+                </a>
+
+                <a
+                    href="{{ url_for('admin_logout') }}"
+                    class="admin-logout-btn"
+                >
+                    Logout
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="admin-review-filter">
+
+            <form
+                method="GET"
+                action="{{ url_for('admin_reviews') }}"
+            >
+
+                <div class="review-filter-group">
+
+                    <label for="status">
+                        Filter by Status
+                    </label>
+
+                    <select
+                        id="status"
+                        name="status"
+                    >
+
+                        <option
+                            value=""
+                            {% if not selected_status %}selected{% endif %}
+                        >
+                            All Reviews
+                        </option>
+
+                        <option
+                            value="Pending"
+                            {% if selected_status == "Pending" %}selected{% endif %}
+                        >
+                            Pending
+                        </option>
+
+                        <option
+                            value="Approved"
+                            {% if selected_status == "Approved" %}selected{% endif %}
+                        >
+                            Approved
+                        </option>
+
+                        <option
+                            value="Rejected"
+                            {% if selected_status == "Rejected" %}selected{% endif %}
+                        >
+                            Rejected
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="admin-filter-actions">
+
+                    <button
+                        type="submit"
+                        class="admin-filter-btn"
+                    >
+                        Filter Reviews
+                    </button>
+
+                    <a
+                        href="{{ url_for('admin_reviews') }}"
+                        class="admin-clear-filter-btn"
+                    >
+                        Clear
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        {% if reviews %}
+
+        <div class="reviews-card">
+
+            <div class="reviews-card-header">
+
+                <h2>
+                    Customer Reviews
+                </h2>
+
+                <span class="review-count">
+                    {{ reviews|length }}
+                    Review{% if reviews|length != 1 %}s{% endif %}
+                </span>
+
+            </div>
+
+
+            <div class="reviews-table-wrapper">
+
+                <table class="reviews-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Customer</th>
+                            <th>Rating</th>
+                            <th>Review</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for review in reviews %}
+
+                        <tr>
+
+                            <td>
+                                <span class="review-id">
+                                    #{{ review["id"] }}
+                                </span>
+                            </td>
+
+
+                            <td>
+                                <span class="review-customer">
+                                    {{ review["name"] }}
+                                </span>
+                            </td>
+
+
+                            <td>
+
+                                <span class="review-stars">
+                                    {% for star in range(review["rating"]) %}
+                                        ★
+                                    {% endfor %}
+                                </span>
+
+                                <span class="review-rating-number">
+                                    {{ review["rating"] }}/5
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <div class="admin-review-text">
+                                    {{ review["review"] }}
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                <span
+                                    class="admin-status-badge status-{{ review['status']|lower }}"
+                                >
+                                    {{ review["status"] }}
+                                </span>
+
+                            </td>
+
+
+                            <td>
+                                {{ review["created_at"] }}
+                            </td>
+
+
+                            <td>
+
+                                <div class="admin-review-actions">
+
+                                    {% if review["status"] != "Approved" %}
+
+                                    <form
+                                        method="POST"
+                                        action="{{ url_for(
+                                            'update_review_status',
+                                            review_id=review['id']
+                                        ) }}"
+                                    >
+
+                                        <input
+                                            type="hidden"
+                                            name="status"
+                                            value="Approved"
+                                        >
+
+                                        <button
+                                            type="submit"
+                                            class="admin-review-approve"
+                                        >
+                                            Approve
+                                        </button>
+
+                                    </form>
+
+                                    {% endif %}
+
+
+                                    {% if review["status"] != "Rejected" %}
+
+                                    <form
+                                        method="POST"
+                                        action="{{ url_for(
+                                            'update_review_status',
+                                            review_id=review['id']
+                                        ) }}"
+                                    >
+
+                                        <input
+                                            type="hidden"
+                                            name="status"
+                                            value="Rejected"
+                                        >
+
+                                        <button
+                                            type="submit"
+                                            class="admin-review-reject"
+                                        >
+                                            Reject
+                                        </button>
+
+                                    </form>
+
+                                    {% endif %}
+
+
+                                    <form
+                                        method="POST"
+                                        action="{{ url_for(
+                                            'delete_review',
+                                            review_id=review['id']
+                                        ) }}"
+                                        onsubmit="return confirm('Delete this review permanently?');"
+                                    >
+
+                                        <button
+                                            type="submit"
+                                            class="admin-review-delete"
+                                        >
+                                            Delete
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        {% else %}
+
+        <div class="admin-empty-state">
+
+            <div class="admin-empty-icon">
+                ⭐
+            </div>
+
+            <h2>
+                No Reviews Found
+            </h2>
+
+            <p>
+                Customer reviews will appear here after submission.
+            </p>
+
+            <a
+                href="{{ url_for('review') }}"
+                class="admin-back-btn"
+            >
+                View Review Form
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+{% endblock %}
