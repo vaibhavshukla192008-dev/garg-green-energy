@@ -1,3 +1,4 @@
+
 import os
 import sqlite3
 
@@ -146,7 +147,6 @@ def init_db():
     }
 
     new_columns = {
-
         "about_label": "TEXT",
         "about_heading": "TEXT",
         "about_description_1": "TEXT",
@@ -226,57 +226,39 @@ def init_db():
             )
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
-
             "GARG GREEN ENERGY",
-
             "POWERING A GREENER TOMORROW",
-
             "2025",
-
             "Complete solar energy solutions for homes, businesses, industries, institutions, agriculture and government projects.",
-
             "01 First Floor, SK Building, Near DK Chauraha, Sanatan Nagar, Lucknow – 226068",
-
             "Sehda Mahrajpur, Azamgarh",
 
             "WHO WE ARE",
-
             "Growing with Clean Energy",
-
             "Complete solar energy solutions for homes, businesses, industries, institutions, agriculture and government projects.",
-
             "GARG GREEN ENERGY is focused on providing reliable renewable-energy solutions and supporting customers with solar-related products, electrical components, installation, commissioning and service support.",
 
             "Our Focus",
-
             "Solar and renewable-energy solutions for homes, shops, offices, factories, institutions, farmers and government project requirements.",
 
             "Our Solutions",
-
             "Electrical components, installation solutions, commissioning and service support for solar-related requirements.",
 
             "Service Support",
-
             "We provide installation, commissioning and ongoing service support according to customer requirements.",
 
             "Where We Are",
-
             "Our head office is located in Lucknow, Uttar Pradesh.",
 
             "LET'S WORK TOGETHER",
-
             "Looking for a Reliable Energy Solution?",
-
             "Get in touch with GARG GREEN ENERGY for your solar and renewable-energy requirements."
-
         ))
 
     else:
 
         defaults = {
-
             "about_label": "WHO WE ARE",
-
             "about_heading": "Growing with Clean Energy",
 
             "about_description_1":
@@ -402,6 +384,16 @@ def home():
         reviews=reviews,
         content=content
     )
+
+
+# ==================================================
+# SOLAR CALCULATOR
+# ==================================================
+
+@app.route("/calculator")
+def calculator():
+
+    return render_template("calculator.html")
 
 
 @app.route("/about")
@@ -1235,7 +1227,6 @@ def admin_content():
 
                 WHERE id = ?
             """, (
-
                 company_name,
                 tagline,
                 established,
@@ -1310,7 +1301,6 @@ def admin_content():
                     ?, ?, ?
                 )
             """, (
-
                 company_name,
                 tagline,
                 established,
@@ -1406,3 +1396,4 @@ if __name__ == "__main__":
     app.run(
         debug=True
     )
+

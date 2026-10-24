@@ -1,274 +1,534 @@
+
 <!doctype html>
-
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>{% block title %}GARG GREEN ENERGY{% endblock %}</title>
 
     <meta name="description"
-          content="GARG GREEN ENERGY — Powering a Greener Tomorrow with renewable energy products, solar solutions, installation and service support.">
-
-    <meta name="theme-color"
-          content="#0b1f16">
+          content="GARG GREEN ENERGY — Solar energy products, installation, renewable energy solutions and customer support.">
+    <meta name="theme-color" content="#0b1f16">
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/style.css') }}">
 
+    <style>
+        .gge-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 9998;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+            background: rgba(3, 15, 10, .76);
+            backdrop-filter: blur(5px);
+        }
+
+        .gge-modal.is-open {
+            display: flex;
+        }
+
+        .gge-dialog {
+            position: relative;
+            width: 100%;
+            max-width: 470px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            border-radius: 20px;
+            background: #fff;
+            color: #17251c;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, .3);
+            animation: gge-enter .25s ease-out;
+        }
+
+        @keyframes gge-enter {
+            from { opacity: 0; transform: translateY(14px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .gge-kicker {
+            margin: 0 0 9px;
+            color: #168047;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .gge-dialog h2 {
+            margin: 0 35px 8px 0;
+            font-size: clamp(25px, 5vw, 32px);
+            line-height: 1.2;
+        }
+
+        .gge-description {
+            margin: 0 0 22px;
+            color: #637067;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .gge-close {
+            position: absolute;
+            top: 13px;
+            right: 15px;
+            display: grid;
+            width: 38px;
+            height: 38px;
+            place-items: center;
+            border: 0;
+            border-radius: 50%;
+            background: #eef3ef;
+            color: #17251c;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        .gge-form {
+            display: grid;
+            gap: 13px;
+        }
+
+        .gge-field label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .gge-field input,
+        .gge-field select,
+        .gge-field textarea {
+            box-sizing: border-box;
+            width: 100%;
+            min-height: 46px;
+            padding: 12px;
+            border: 1px solid #d8e0da;
+            border-radius: 10px;
+            background: #fff;
+            color: #17251c;
+            font: inherit;
+            font-size: 14px;
+        }
+
+        .gge-field textarea {
+            min-height: 75px;
+            resize: vertical;
+        }
+
+        .gge-field input:focus,
+        .gge-field select:focus,
+        .gge-field textarea:focus {
+            outline: 2px solid #168047;
+            outline-offset: 2px;
+        }
+
+        .gge-submit {
+            width: 100%;
+            min-height: 49px;
+            padding: 13px 18px;
+            border: 0;
+            border-radius: 10px;
+            background: #168047;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .gge-submit:hover {
+            background: #106737;
+        }
+
+        .gge-privacy {
+            margin: 0;
+            color: #68736b;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .gge-whatsapp {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 9990;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            min-height: 52px;
+            padding: 0 19px;
+            border-radius: 999px;
+            background: #20b85a;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 800;
+            text-decoration: none;
+            box-shadow: 0 7px 25px rgba(0, 0, 0, .2);
+            transition: transform .2s, background .2s;
+        }
+
+        .gge-whatsapp:hover {
+            transform: translateY(-3px);
+            background: #159447;
+        }
+
+        .gge-whatsapp svg {
+            width: 23px;
+            height: 23px;
+            fill: currentColor;
+        }
+
+        body.gge-modal-open {
+            overflow: hidden;
+        }
+
+        @media (max-width: 480px) {
+            .gge-dialog {
+                padding: 25px 19px;
+                border-radius: 16px;
+            }
+
+            .gge-whatsapp {
+                right: 12px;
+                bottom: 12px;
+                min-height: 48px;
+                padding: 0 15px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .gge-dialog,
+            .gge-whatsapp {
+                animation: none;
+                transition: none;
+            }
+        }
+    </style>
 </head>
 
 <body>
-
-<!-- ================================
-     HEADER / NAVBAR
-================================ -->
-
 <header class="site-header">
-
     <a class="brand"
        href="{{ url_for('home') }}"
        aria-label="GARG GREEN ENERGY Home">
 
-        <img
-            src="{{ url_for('static', filename='images/logo.jpg') }}"
-            alt="GARG GREEN ENERGY logo"
-        >
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}"
+             alt="GARG GREEN ENERGY logo">
 
         <div class="brand-text">
-
             <strong>GARG GREEN ENERGY</strong>
-
             <span>POWERING A GREENER TOMORROW</span>
-
         </div>
-
     </a>
 
-
-    <!-- MOBILE MENU BUTTON -->
-
-    <button
-        class="menu-toggle"
-        id="menuToggle"
-        aria-label="Open navigation menu"
-        aria-expanded="false"
-        aria-controls="mainNav"
-        type="button"
-    >
-
-        <span></span>
-        <span></span>
-        <span></span>
-
+    <button class="menu-toggle"
+            id="menuToggle"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+            aria-controls="mainNav"
+            type="button">
+        <span></span><span></span><span></span>
     </button>
 
+    <nav class="main-nav" id="mainNav" aria-label="Main navigation">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('home') }}#about">About</a>
+        <a href="{{ url_for('home') }}#solutions">Solutions</a>
+        <a href="{{ url_for('home') }}#products">Products</a>
+        <a href="{{ url_for('home') }}#services">Services</a>
+        <a href="{{ url_for('projects') }}">Projects</a>
 
-    <!-- NAVIGATION -->
+        <!-- NEW: Solar Calculator -->
+        <a href="{{ url_for('calculator') }}">Solar Calculator</a>
 
-    <nav class="main-nav"
-         id="mainNav"
-         aria-label="Main navigation">
-
-        <a href="{{ url_for('home') }}">
-            Home
-        </a>
-
-        <a href="{{ url_for('home') }}#about">
-            About
-        </a>
-
-        <a href="{{ url_for('home') }}#solutions">
-            Solutions
-        </a>
-
-        <a href="{{ url_for('home') }}#products">
-            Products
-        </a>
-
-        <a href="{{ url_for('home') }}#services">
-            Services
-        </a>
-
-        <a href="{{ url_for('projects') }}">
-            Projects
-        </a>
-
-        <a href="{{ url_for('faq') }}">
-            FAQ
-        </a>
-
-        <a href="{{ url_for('review') }}">
-            Reviews
-        </a>
-
-        <a href="{{ url_for('contact') }}"
-           class="nav-cta">
-            Contact Us
-        </a>
-
+        <a href="{{ url_for('faq') }}">FAQ</a>
+        <a href="{{ url_for('review') }}">Reviews</a>
+        <a href="{{ url_for('contact') }}" class="nav-cta">Contact Us</a>
     </nav>
-
 </header>
 
-
-<!-- ================================
-     PAGE CONTENT
-================================ -->
-
 <main>
-
     {% block content %}{% endblock %}
-
 </main>
 
-
-<!-- ================================
-     FOOTER
-================================ -->
-
 <footer class="site-footer">
-
     <div class="footer-content">
-
         <div class="footer-brand">
-
-            <img
-                src="{{ url_for('static', filename='images/logo.jpg') }}"
-                alt="GARG GREEN ENERGY logo"
-            >
+            <img src="{{ url_for('static', filename='images/logo.jpg') }}"
+                 alt="GARG GREEN ENERGY logo">
 
             <div>
-
                 <strong>GARG GREEN ENERGY</strong>
-
-                <p>
-                    POWERING A GREENER TOMORROW
-                </p>
-
+                <p>POWERING A GREENER TOMORROW</p>
             </div>
-
         </div>
-
 
         <div class="footer-links">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('home') }}#about">About</a>
+            <a href="{{ url_for('home') }}#solutions">Solutions</a>
+            <a href="{{ url_for('home') }}#products">Products</a>
+            <a href="{{ url_for('home') }}#services">Services</a>
+            <a href="{{ url_for('projects') }}">Projects</a>
 
-            <a href="{{ url_for('home') }}">
-                Home
-            </a>
+            <!-- NEW: Solar Calculator -->
+            <a href="{{ url_for('calculator') }}">Solar Calculator</a>
 
-            <a href="{{ url_for('home') }}#about">
-                About
-            </a>
-
-            <a href="{{ url_for('home') }}#solutions">
-                Solutions
-            </a>
-
-            <a href="{{ url_for('home') }}#products">
-                Products
-            </a>
-
-            <a href="{{ url_for('home') }}#services">
-                Services
-            </a>
-
-            <a href="{{ url_for('projects') }}">
-                Projects
-            </a>
-
-            <a href="{{ url_for('faq') }}">
-                FAQ
-            </a>
-
-            <a href="{{ url_for('review') }}">
-                Reviews
-            </a>
-
-            <a href="{{ url_for('contact') }}">
-                Contact
-            </a>
-
+            <a href="{{ url_for('faq') }}">FAQ</a>
+            <a href="{{ url_for('review') }}">Reviews</a>
+            <a href="{{ url_for('contact') }}">Contact</a>
         </div>
-
     </div>
-
 
     <div class="footer-bottom">
-
-        <p>
-            © 2025 GARG GREEN ENERGY. All rights reserved.
-        </p>
-
-        <p>
-            Renewable Energy • Solar Solutions • Clean Energy
-        </p>
-
+        <p>© 2026 GARG GREEN ENERGY. All rights reserved.</p>
+        <p>Renewable Energy • Solar Solutions • Clean Energy</p>
     </div>
-
 </footer>
 
+<!-- First-visit enquiry popup -->
+<div class="gge-modal" id="ggeModal" aria-hidden="true">
+    <section class="gge-dialog"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="ggeModalTitle"
+             aria-describedby="ggeModalDescription">
 
-<!-- ================================
-     MOBILE MENU SCRIPT
-================================ -->
+        <button class="gge-close"
+                id="ggeModalClose"
+                type="button"
+                aria-label="Close enquiry form">&times;</button>
+
+        <p class="gge-kicker">Let's go solar</p>
+        <h2 id="ggeModalTitle">Get Your Solar Enquiry Started</h2>
+
+        <p class="gge-description" id="ggeModalDescription">
+            Tell us a little about your requirement. We'll prepare an enquiry
+            message that you can send to GARG GREEN ENERGY on WhatsApp.
+        </p>
+
+        <form class="gge-form" id="ggeEnquiryForm">
+            <div class="gge-field">
+                <label for="ggeName">Your name *</label>
+                <input id="ggeName" name="name" type="text"
+                       autocomplete="name" maxlength="80" required>
+            </div>
+
+            <div class="gge-field">
+                <label for="ggePhone">Your phone number *</label>
+                <input id="ggePhone" name="phone" type="tel"
+                       inputmode="tel" autocomplete="tel"
+                       maxlength="20" placeholder="Enter your contact number"
+                       required>
+            </div>
+
+            <div class="gge-field">
+                <label for="ggeRequirement">What do you need? *</label>
+                <select id="ggeRequirement" name="requirement" required>
+                    <option value="">Select a requirement</option>
+                    <option value="Residential rooftop solar">Home rooftop solar</option>
+                    <option value="Commercial solar">Commercial solar</option>
+                    <option value="Solar products">Solar products</option>
+                    <option value="Installation and service">Installation / service</option>
+                    <option value="Subsidy information">Subsidy information</option>
+                    <option value="Other enquiry">Other enquiry</option>
+                </select>
+            </div>
+
+            <div class="gge-field">
+                <label for="ggeMessage">Additional details (optional)</label>
+                <textarea id="ggeMessage" name="message"
+                          maxlength="500"
+                          placeholder="City, approximate system size, or questions"></textarea>
+            </div>
+
+            <button class="gge-submit" type="submit">
+                Continue to WhatsApp
+            </button>
+
+            <p class="gge-privacy">
+                Your details will be placed into a WhatsApp message for you
+                to review and send. Nothing is sent automatically by this form.
+            </p>
+        </form>
+    </section>
+</div>
+
+<!-- WhatsApp floating button -->
+<a class="gge-whatsapp"
+   id="ggeWhatsAppButton"
+   href="#"
+   target="_blank"
+   rel="noopener noreferrer"
+   aria-label="Enquire with GARG GREEN ENERGY on WhatsApp">
+
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M20.52 3.48A11.8 11.8 0 0 0 12.1 0C5.56 0 .24 5.32.24 11.86c0 2.09.55 4.13 1.59 5.94L.14 24l6.35-1.66a11.9 11.9 0 0 0 5.6 1.42h.01c6.54 0 11.86-5.32 11.86-11.86a11.8 11.8 0 0 0-3.44-8.42ZM12.1 21.75h-.01a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.77.99 1.01-3.68-.24-.38a9.85 9.85 0 0 1-1.51-5.23c0-5.47 4.45-9.92 9.93-9.92a9.85 9.85 0 0 1 7.02 2.91 9.85 9.85 0 0 1 2.9 7.02c0 5.47-4.45 9.92-9.93 9.92Zm5.45-7.43c-.3-.15-1.77-.87-2.05-.97-.28-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.47-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.49s1.07 2.89 1.22 3.09c.15.2 2.1 3.21 5.08 4.5.71.31 1.27.5 1.7.64.71.23 1.36.2 1.87.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35Z"/>
+    </svg>
+    <span>WhatsApp Enquiry</span>
+</a>
 
 <script>
+(function () {
+    "use strict";
 
+    /* Mobile navigation */
     const menuToggle = document.getElementById("menuToggle");
     const mainNav = document.getElementById("mainNav");
 
     if (menuToggle && mainNav) {
-
         menuToggle.addEventListener("click", function () {
-
             const isActive = mainNav.classList.toggle("active");
 
-            menuToggle.classList.toggle("active");
-
-            menuToggle.setAttribute(
-                "aria-expanded",
-                isActive ? "true" : "false"
-            );
-
+            menuToggle.classList.toggle("active", isActive);
+            menuToggle.setAttribute("aria-expanded", String(isActive));
             menuToggle.setAttribute(
                 "aria-label",
-                isActive
-                    ? "Close navigation menu"
-                    : "Open navigation menu"
+                isActive ? "Close navigation menu" : "Open navigation menu"
             );
-
         });
 
-
-        document.querySelectorAll(".main-nav a").forEach(function (link) {
-
+        mainNav.querySelectorAll("a").forEach(function (link) {
             link.addEventListener("click", function () {
-
                 mainNav.classList.remove("active");
-
                 menuToggle.classList.remove("active");
-
-                menuToggle.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-                menuToggle.setAttribute(
-                    "aria-label",
-                    "Open navigation menu"
-                );
-
+                menuToggle.setAttribute("aria-expanded", "false");
+                menuToggle.setAttribute("aria-label", "Open navigation menu");
             });
-
         });
-
     }
 
-</script>
+    /*
+      Replace this placeholder with the company's official WhatsApp number.
+      Country code + number only: no +, spaces, brackets or hyphens.
+      Example format for India: 91XXXXXXXXXX
+    */
+    const COMPANY_WHATSAPP_NUMBER = "91XXXXXXXXXX";
 
+    const modal = document.getElementById("ggeModal");
+    const closeButton = document.getElementById("ggeModalClose");
+    const enquiryForm = document.getElementById("ggeEnquiryForm");
+    const whatsappButton = document.getElementById("ggeWhatsAppButton");
+
+    const storageKey = "gge_enquiry_popup_seen_v1";
+    let previousFocus = null;
+
+    function whatsappIsConfigured() {
+        return /^\d{10,15}$/.test(COMPANY_WHATSAPP_NUMBER);
+    }
+
+    function createWhatsAppUrl(message) {
+        if (!whatsappIsConfigured()) return null;
+
+        return "https://wa.me/" +
+            COMPANY_WHATSAPP_NUMBER +
+            "?text=" +
+            encodeURIComponent(message);
+    }
+
+    function openModal() {
+        previousFocus = document.activeElement;
+        modal.classList.add("is-open");
+        modal.setAttribute("aria-hidden", "false");
+        document.body.classList.add("gge-modal-open");
+        document.getElementById("ggeName").focus();
+    }
+
+    function closeModal(markSeen) {
+        modal.classList.remove("is-open");
+        modal.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("gge-modal-open");
+
+        if (markSeen) {
+            try {
+                localStorage.setItem(storageKey, "yes");
+            } catch (error) {}
+        }
+
+        if (previousFocus && typeof previousFocus.focus === "function") {
+            previousFocus.focus();
+        }
+    }
+
+    closeButton.addEventListener("click", function () {
+        closeModal(true);
+    });
+
+    modal.addEventListener("click", function (event) {
+        if (event.target === modal) closeModal(true);
+    });
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && modal.classList.contains("is-open")) {
+            closeModal(true);
+        }
+    });
+
+    enquiryForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        if (!enquiryForm.reportValidity()) return;
+
+        if (!whatsappIsConfigured()) {
+            alert(
+                "The company's official WhatsApp number has not been added yet. " +
+                "Please update it in base.html before testing enquiries."
+            );
+            return;
+        }
+
+        const name = document.getElementById("ggeName").value.trim();
+        const phone = document.getElementById("ggePhone").value.trim();
+        const requirement = document.getElementById("ggeRequirement").value;
+        const extraMessage = document.getElementById("ggeMessage").value.trim();
+
+        const message = [
+            "Hello GARG GREEN ENERGY, I would like to enquire.",
+            "",
+            "Name: " + name,
+            "Contact number: " + phone,
+            "Requirement: " + requirement,
+            extraMessage ? "Details: " + extraMessage : ""
+        ].filter(Boolean).join("\n");
+
+        const url = createWhatsAppUrl(message);
+
+        if (url) {
+            window.open(url, "_blank", "noopener,noreferrer");
+            closeModal(true);
+        }
+    });
+
+    whatsappButton.addEventListener("click", function (event) {
+        if (!whatsappIsConfigured()) {
+            event.preventDefault();
+            alert("Please add the company's official WhatsApp number in base.html first.");
+            return;
+        }
+
+        whatsappButton.href = createWhatsAppUrl(
+            "Hello GARG GREEN ENERGY, I would like to know more about your solar solutions."
+        );
+    });
+
+    /* Show the popup only on the visitor's first visit. */
+    let hasSeenPopup = false;
+
+    try {
+        hasSeenPopup = localStorage.getItem(storageKey) === "yes";
+    } catch (error) {
+        hasSeenPopup = false;
+    }
+
+    if (!hasSeenPopup) {
+        window.setTimeout(openModal, 700);
+    }
+})();
+</script>
 </body>
 </html>

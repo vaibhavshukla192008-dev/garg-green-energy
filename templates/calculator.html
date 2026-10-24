@@ -1,0 +1,408 @@
+
+{% extends "base.html" %}
+
+{% block title %}Solar Calculator | GARG GREEN ENERGY{% endblock %}
+
+{% block content %}
+<style>
+.solar-calc-page {
+    padding: 55px 18px 70px;
+    background: #f4f8f4;
+    color: #173323;
+}
+.solar-calc-wrap {
+    max-width: 1050px;
+    margin: auto;
+}
+.solar-calc-heading {
+    max-width: 700px;
+    margin: 0 auto 32px;
+    text-align: center;
+}
+.solar-calc-heading .eyebrow {
+    color: #168047;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 12px;
+}
+.solar-calc-heading h1 {
+    margin: 10px 0;
+    font-size: clamp(30px, 5vw, 46px);
+    line-height: 1.15;
+}
+.solar-calc-heading p {
+    color: #647368;
+    line-height: 1.7;
+}
+.solar-calc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    align-items: start;
+}
+.solar-calc-card {
+    background: #fff;
+    padding: 28px;
+    border: 1px solid #e0e9e0;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(20, 65, 35, .06);
+}
+.solar-calc-card h2 {
+    margin: 0 0 22px;
+    font-size: 23px;
+}
+.solar-calc-field {
+    margin-bottom: 20px;
+}
+.solar-calc-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 700;
+}
+.solar-calc-field select,
+.solar-calc-field input {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px;
+    border: 1px solid #d6e0d7;
+    border-radius: 10px;
+    background: #fff;
+    color: #173323;
+    font: inherit;
+}
+.solar-calc-field select:focus,
+.solar-calc-field input:focus {
+    outline: 2px solid #168047;
+    outline-offset: 2px;
+}
+.solar-calc-hint {
+    display: block;
+    margin-top: 7px;
+    color: #68766c;
+    font-size: 12px;
+    line-height: 1.5;
+}
+.solar-calc-button {
+    width: 100%;
+    min-height: 49px;
+    border: 0;
+    border-radius: 10px;
+    background: #168047;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+}
+.solar-calc-button:hover {
+    background: #106737;
+}
+.solar-calc-results {
+    display: grid;
+    gap: 13px;
+}
+.solar-calc-result {
+    padding: 17px;
+    border-radius: 12px;
+    background: #f2f7f2;
+}
+.solar-calc-result span {
+    display: block;
+    margin-bottom: 6px;
+    color: #607064;
+    font-size: 13px;
+}
+.solar-calc-result strong {
+    font-size: clamp(22px, 3vw, 29px);
+    overflow-wrap: anywhere;
+}
+.solar-calc-result.primary {
+    background: #e1f4e5;
+    border: 1px solid #c6e8ce;
+}
+.solar-calc-result.primary strong {
+    color: #14753b;
+}
+.solar-calc-note {
+    margin: 18px 0 0;
+    color: #657268;
+    font-size: 12px;
+    line-height: 1.7;
+}
+.solar-calc-cta {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
+    min-height: 48px;
+    border-radius: 10px;
+    background: #173323;
+    color: white;
+    text-decoration: none;
+    font-weight: 800;
+}
+.solar-calc-cta:hover {
+    background: #254b32;
+}
+@media (max-width: 720px) {
+    .solar-calc-grid {
+        grid-template-columns: 1fr;
+    }
+    .solar-calc-card {
+        padding: 22px;
+    }
+    .solar-calc-page {
+        padding-top: 38px;
+    }
+}
+</style>
+
+<section class="solar-calc-page">
+    <div class="solar-calc-wrap">
+
+        <div class="solar-calc-heading">
+            <span class="eyebrow">Smart Solar Planning</span>
+            <h1>Solar Savings Calculator</h1>
+            <p>
+                Estimate your rooftop solar cost, potential monthly savings
+                and simple payback period with GARG GREEN ENERGY.
+            </p>
+        </div>
+
+        <div class="solar-calc-grid">
+
+            <div class="solar-calc-card">
+                <h2>Your Solar Requirements</h2>
+
+                <form id="solarCalcForm">
+                    <div class="solar-calc-field">
+                        <label for="solarCapacity">Solar system capacity</label>
+                        <select id="solarCapacity">
+                            <option value="1">1 kW</option>
+                            <option value="2">2 kW</option>
+                            <option value="3" selected>3 kW</option>
+                            <option value="4">4 kW</option>
+                            <option value="5">5 kW</option>
+                            <option value="6">6 kW</option>
+                            <option value="8">8 kW</option>
+                            <option value="10">10 kW</option>
+                        </select>
+                    </div>
+
+                    <div class="solar-calc-field">
+                        <label for="solarBill">Average monthly electricity bill (₹)</label>
+                        <input id="solarBill"
+                               type="number"
+                               min="0"
+                               max="10000000"
+                               step="100"
+                               value="3000"
+                               required>
+                    </div>
+
+                    <div class="solar-calc-field">
+                        <label for="solarRate">Electricity rate (₹ per unit)</label>
+                        <input id="solarRate"
+                               type="number"
+                               min="0.1"
+                               max="1000"
+                               step="0.1"
+                               value="8"
+                               required>
+                    </div>
+
+                    <div class="solar-calc-field">
+                        <label for="solarCost">Estimated installed cost per kW (₹)</label>
+                        <input id="solarCost"
+                               type="number"
+                               min="1"
+                               max="10000000"
+                               step="500"
+                               value="60000"
+                               required>
+                        <span class="solar-calc-hint">
+                            Editable planning assumption. Replace this with your
+                            company's actual quotation rates.
+                        </span>
+                    </div>
+
+                    <div class="solar-calc-field">
+                        <label for="solarOffset">Estimated bill offset (%)</label>
+                        <input id="solarOffset"
+                               type="number"
+                               min="0"
+                               max="100"
+                               step="5"
+                               value="80"
+                               required>
+                        <span class="solar-calc-hint">
+                            Actual savings depend on sunlight, roof direction,
+                            shading, tariffs and system design.
+                        </span>
+                    </div>
+
+                    <div class="solar-calc-field">
+                        <label for="solarSubsidy">Subsidy to include (₹)</label>
+                        <input id="solarSubsidy"
+                               type="number"
+                               min="0"
+                               max="10000000"
+                               step="1000"
+                               value="0"
+                               required>
+                        <span class="solar-calc-hint">
+                            Starts at ₹0. Enter only a subsidy amount that has
+                            been verified for your installation.
+                        </span>
+                    </div>
+
+                    <button class="solar-calc-button" type="submit">
+                        Calculate My Savings
+                    </button>
+                </form>
+            </div>
+
+            <div class="solar-calc-card" aria-live="polite">
+                <h2>Your Estimated Results</h2>
+
+                <div class="solar-calc-results">
+                    <div class="solar-calc-result primary">
+                        <span>Estimated system cost before subsidy</span>
+                        <strong id="resultGross">₹1,80,000</strong>
+                    </div>
+
+                    <div class="solar-calc-result">
+                        <span>Estimated cost after entered subsidy</span>
+                        <strong id="resultNet">₹1,80,000</strong>
+                    </div>
+
+                    <div class="solar-calc-result">
+                        <span>Potential monthly bill savings</span>
+                        <strong id="resultMonthly">₹2,400</strong>
+                    </div>
+
+                    <div class="solar-calc-result">
+                        <span>Potential yearly savings</span>
+                        <strong id="resultYearly">₹28,800</strong>
+                    </div>
+
+                    <div class="solar-calc-result">
+                        <span>Estimated simple payback period</span>
+                        <strong id="resultPayback">6.3 years</strong>
+                    </div>
+                </div>
+
+                <a class="solar-calc-cta"
+                   href="{{ url_for('contact') }}">
+                    Request an Official Solar Quote
+                </a>
+
+                <p class="solar-calc-note" id="solarCalcNote">
+                    These are illustrative estimates, not a binding quotation
+                    or a guarantee of savings. Subsidy eligibility and amounts
+                    must be independently verified before making a decision.
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+(function () {
+    const form = document.getElementById("solarCalcForm");
+
+    const fields = {
+        capacity: document.getElementById("solarCapacity"),
+        bill: document.getElementById("solarBill"),
+        rate: document.getElementById("solarRate"),
+        cost: document.getElementById("solarCost"),
+        offset: document.getElementById("solarOffset"),
+        subsidy: document.getElementById("solarSubsidy")
+    };
+
+    const money = new Intl.NumberFormat("en-IN", {
+        style: "currency",
+        currency: "INR",
+        maximumFractionDigits: 0
+    });
+
+    function formatMoney(value) {
+        return money.format(Math.max(0, value));
+    }
+
+    function calculateSolar() {
+        const capacity = Number(fields.capacity.value);
+        const bill = Number(fields.bill.value);
+        const rate = Number(fields.rate.value);
+        const costPerKw = Number(fields.cost.value);
+        const offset = Number(fields.offset.value);
+        const subsidy = Number(fields.subsidy.value);
+
+        if (
+            !Number.isFinite(capacity) || capacity <= 0 ||
+            !Number.isFinite(bill) || bill < 0 ||
+            !Number.isFinite(rate) || rate <= 0 ||
+            !Number.isFinite(costPerKw) || costPerKw <= 0 ||
+            !Number.isFinite(offset) || offset < 0 || offset > 100 ||
+            !Number.isFinite(subsidy) || subsidy < 0
+        ) {
+            return;
+        }
+
+        const grossCost = capacity * costPerKw;
+        const netCost = Math.max(0, grossCost - subsidy);
+        const monthlySavings = bill * offset / 100;
+        const yearlySavings = monthlySavings * 12;
+
+        const payback = yearlySavings > 0
+            ? netCost / yearlySavings
+            : null;
+
+        document.getElementById("resultGross").textContent =
+            formatMoney(grossCost);
+
+        document.getElementById("resultNet").textContent =
+            formatMoney(netCost);
+
+        document.getElementById("resultMonthly").textContent =
+            formatMoney(monthlySavings);
+
+        document.getElementById("resultYearly").textContent =
+            formatMoney(yearlySavings);
+
+        document.getElementById("resultPayback").textContent =
+            payback === null
+                ? "Not available"
+                : payback.toFixed(1) + " years";
+
+        document.getElementById("solarCalcNote").textContent =
+            "Illustrative calculation only. The entered bill offset is an " +
+            "assumption, not a production forecast. Your actual savings depend " +
+            "on system generation, self-consumption, tariffs, export rules, " +
+            "maintenance and the final quotation. Subsidy eligibility must " +
+            "be verified separately.";
+    }
+
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        if (!form.reportValidity()) {
+            return;
+        }
+
+        calculateSolar();
+    });
+
+    Object.values(fields).forEach(function (field) {
+        field.addEventListener("change", calculateSolar);
+        field.addEventListener("input", calculateSolar);
+    });
+
+    calculateSolar();
+})();
+</script>
+{% endblock %}
